@@ -13,31 +13,26 @@ const percentilesToChartLines = swarmTemplateArgs.percentilesToChart
   : [];
 
 // Allows for the average stat to be shown in a different color than percentiles
-const percentileColors = ['#9966CC', '#8A2BE2', '#8E4585', '#E0B0FF', '#C8A2C8', '#E6E6FA']
+const percentileColors = ['#eeff00', '#9966CC', '#8A2BE2', '#8E4585', '#E0B0FF', '#C8A2C8', '#E6E6FA']
   .slice(0, percentilesToChartLines.length)
   .concat('#eeff00');
 
 const availableSwarmCharts: ILineChartProps[] = [
   {
-    title: 'Total Requests per Second',
-    lines: [
-      { name: 'RPS', key: 'currentRps' },
-      { name: 'Failures/s', key: 'currentFailPerSec' },
-    ],
-    colors: ['#00ca5a', '#ff6d6d'],
-  },
-  {
     title: 'Response Times (ms)',
     lines: [
       ...percentilesToChartLines,
-      { name: 'Average Response Time', key: 'totalAvgResponseTime' },
     ],
     colors: percentileColors,
+    yAxisMax: 1000,
   },
   {
-    title: 'Number of Users',
-    lines: [{ name: 'Number of Users', key: 'userCount' }],
-    colors: ['#0099ff'],
+    title: 'Total Requests per Second',
+    lines: [
+      { name: 'RPS', key: 'currentRps' },
+    ],
+    colors: ['#00ca5a'],
+    yAxisMax: 75,
   },
 ];
 

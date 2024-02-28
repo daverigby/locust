@@ -23,12 +23,14 @@ interface ICreateOptions {
   seriesData: EChartsOption['Series'][];
   charts: ICharts;
   colors?: string[];
+  yAxisMax?: number;
 }
 
 export interface ILineChartProps {
   title: string;
   lines: ILine[];
   colors?: string[];
+  yAxisMax?: number;
 }
 
 interface ILineChart extends ILineChartProps {
@@ -46,7 +48,7 @@ registerTheme('locust', {
   },
 });
 
-const createOptions = ({ charts, title, seriesData, colors }: ICreateOptions) => ({
+const createOptions = ({ charts, title, seriesData, colors, yAxisMax }: ICreateOptions) => ({
   legend: {
     icon: 'circle',
     inactiveColor: CHART_TEXT_COLOR,
@@ -109,6 +111,7 @@ const createOptions = ({ charts, title, seriesData, colors }: ICreateOptions) =>
   yAxis: {
     type: 'value',
     boundaryGap: [0, '5%'],
+    max: yAxisMax,
     splitLine: {
       show: false,
     },
@@ -153,7 +156,7 @@ const createMarkLine = (charts: ICharts) => ({
   data: (charts.markers || []).map((timeMarker: string) => ({ xAxis: timeMarker })),
 });
 
-export default function LineChart({ charts, title, lines, colors }: ILineChart) {
+export default function LineChart({ charts, title, lines, colors, yAxisMax }: ILineChart) {
   const [chart, setChart] = useState<ECharts | null>(null);
 
   const chartContainer = useRef<HTMLDivElement | null>(null);
@@ -165,7 +168,7 @@ export default function LineChart({ charts, title, lines, colors }: ILineChart) 
 
     const initChart = init(chartContainer.current, 'locust');
     initChart.setOption(
-      createOptions({ charts, title, seriesData: getSeriesData({ charts, lines }), colors }),
+      createOptions({ charts, title, seriesData: getSeriesData({ charts, lines }), colors, yAxisMax }),
     );
 
     const handleChartResize = () => initChart.resize();
